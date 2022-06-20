@@ -1,0 +1,73 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to Candy Bites where you can buy different sweetss...
+    {% endif %}
+{% endblock %}
+{% block title %}
+  {% if category %}
+        {{category.name}}
+    {% else %}
+        through our tasty world.....
+    {% endif %}
+{% endblock %}
+{% block content %}
+{% if category %}
+<div >
+    <div class="row my_row_class">
+        <div class="mx-auto">
+            <p><a href="{% url 'sweet:allProdCat' %}">Our sweets Collection</a></p>
+    </div>
+          </div>
+</div>
+{% endif %}
+<div class="mx-auto">
+    {% if category %}
+    <img src="{{category.img.url}}" alt="{{category.name}}" width="1100px;" height="550px;">
+</div><br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+<img  src="{% static 'img/banner.png' %}" alt="our products" width="1500px;">
+</div><br>
+<div>
+    <h1 class="text-center my_title">Our Products collections</h1>
+    <p class="text-justify">Duis cupidatat consequat consectetur in. Sint voluptate exercitation pariatur consequat. Excepteur sunt enim sint labore cillum amet.</p>
+    <p>Nostrud deserunt elit tempor aute enim nisi. Incididunt dolor consectetur id eu aliqua enim. Officia et irure sint qui adipisicing. Laborum velit laborum sint ad. Lorem magna commodo enim do in aute. Laborum sit exercitation fugiat non Lorem esse cupidatat sint. Voluptate adipisicing incididunt commodo Lorem laboris culpa. Tempor exercitation mollit labore do.</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" width="125px;" src="{{product.img.url}}" alt="{{product.name}}"> </a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+
+      <hr>
+         <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}active{% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+          {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
